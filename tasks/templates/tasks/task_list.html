@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}My Tasks{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <h1 class="mb-4">My Tasks</h1>
+        
+        {% if tasks %}
+            <div class="list-group">
+                {% for task in tasks %}
+                <div class="list-group-item">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">{{ task.title }}</h5>
+                        <span class="badge bg-{% if task.status == 'completed' %}success{% elif task.status == 'in_progress' %}warning{% else %}secondary{% endif %}">
+                            {{ task.get_status_display }}
+                        </span>
+                    </div>
+                    <p class="mb-1">{{ task.description }}</p>
+                    <small>Created: {{ task.created_at|date:"M d, Y" }}</small>
+                    {% if task.due_date %}
+                        <small class="text-muted"> | Due: {{ task.due_date|date:"M d, Y" }}</small>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-info">
+                <p class="mb-0">No tasks found. Create your first task!</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
